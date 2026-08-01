@@ -18,11 +18,11 @@ Build a comprehensive SaaS platform for managing neighborhood football leagues l
 **Project Type**: Full-stack Web Application (Wasp SaaS Template)  
 **Performance Goals**: Standings table updates < 1s, token credit transactions < 10s  
 **Constraints**: Zero un-typed escape hatches (`any`); strict multi-tenant authorization  
-**Scale/Scope**: Multi-league platform handling hundreds of teams, thousands of players, and token transactions  
+**Scale/Scope**: Multi-league platform handling hundreds of teams, thousands of players, and token transactions
 
 ## Constitution Check
 
-*GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
+_GATE: Must pass before Phase 0 research. Re-check after Phase 1 design._
 
 - [x] **Principle I: Wasp & Full-Stack Type-Safety First**: All models, operations, and UI components use Wasp auto-generated types without `any`.
 - [x] **Principle II: Modular & Extensible SaaS Core**: Token ledger and match engines are decoupled and feature-flagged.
@@ -70,6 +70,6 @@ template/app/
 
 ## Complexity Tracking
 
-| Violation | Why Needed | Simpler Alternative Rejected Because |
-|-----------|------------|-------------------------------------|
-| *None* | *Fully compliant with Constitution* | *N/A* |
+| Violation | Why Needed                          | Simpler Alternative Rejected Because |
+| --------- | ----------------------------------- | ------------------------------------ |
+| _None_    | _Fully compliant with Constitution_ | _N/A_                                |

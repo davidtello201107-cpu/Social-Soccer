@@ -10,7 +10,7 @@
 **Purpose**: Project initialization and environment verification
 
 - [x] T001 Verify Wasp framework dependencies and environment configuration in `template/app/package.json`
-- [ ] T002 [P] Verify code quality, linting, and formatting tools configuration in `template/app/eslint.config.js` and `template/app/prettier.config.ts`
+- [x] T002 [P] Verify code quality, linting, and formatting tools configuration in `template/app/eslint.config.js` and `template/app/prettier.config.ts`
 
 ---
 

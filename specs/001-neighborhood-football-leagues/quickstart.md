@@ -1,6 +1,7 @@
 # Quickstart Validation Guide: Neighborhood Football Leagues
 
 ## Prerequisites
+
 - Node.js 18+ & npm installed
 - Wasp CLI (`npm i -g @wasp.sh/wasp-cli`)
 - Running database or local SQLite setup (`wasp db migrate-dev`)

@@ -36,7 +36,9 @@ enum TokenType {
 ## Entities & Schemas
 
 ### 1. User & Profile (`User`)
+
 Extends Wasp Auth entity with platform role and wallet linkage.
+
 - `id`: String (Primary Key)
 - `email`: String (Unique)
 - `username`: String
@@ -45,7 +47,9 @@ Extends Wasp Auth entity with platform role and wallet linkage.
 - `updatedAt`: DateTime
 
 ### 2. League (`League`)
+
 Represents a competitive league or tournament.
+
 - `id`: String (Primary Key)
 - `name`: String
 - `season`: String
@@ -57,7 +61,9 @@ Represents a competitive league or tournament.
 - `matches`: Match[]
 
 ### 3. Team (`Team`)
+
 Represents a participating squad in a league.
+
 - `id`: String (Primary Key)
 - `leagueId`: String (Foreign Key -> League)
 - `name`: String
@@ -69,7 +75,9 @@ Represents a participating squad in a league.
 - `standings`: StandingsRecord?
 
 ### 4. PlayerProfile (`PlayerProfile`)
+
 Represents a player registered under a team.
+
 - `id`: String (Primary Key)
 - `userId`: String (Unique, Foreign Key -> User)
 - `teamId`: String? (Foreign Key -> Team)
@@ -79,14 +87,18 @@ Represents a player registered under a team.
 - `transfers`: TransferRequest[]
 
 ### 5. Referee (`Referee`)
+
 Represents a match official.
+
 - `id`: String (Primary Key)
 - `userId`: String (Unique, Foreign Key -> User)
 - `certification`: String?
 - `matches`: Match[]
 
 ### 6. Match (`Match`)
+
 Represents a fixture between two teams.
+
 - `id`: String (Primary Key)
 - `leagueId`: String (Foreign Key -> League)
 - `homeTeamId`: String (Foreign Key -> Team)
@@ -100,7 +112,9 @@ Represents a fixture between two teams.
 - `events`: MatchEvent[]
 
 ### 7. MatchEvent (`MatchEvent`)
+
 Records goals, cards, and match occurrences.
+
 - `id`: String (Primary Key)
 - `matchId`: String (Foreign Key -> Match)
 - `playerId`: String (Foreign Key -> PlayerProfile)
@@ -108,7 +122,9 @@ Records goals, cards, and match occurrences.
 - `minute`: Int
 
 ### 8. StandingsRecord (`StandingsRecord`)
+
 Calculated ranking stats for a team in a league.
+
 - `id`: String (Primary Key)
 - `leagueId`: String (Foreign Key -> League)
 - `teamId`: String (Unique, Foreign Key -> Team)
@@ -122,7 +138,9 @@ Calculated ranking stats for a team in a league.
 - `points`: Int (Default: `0`)
 
 ### 9. TransferRequest (`TransferRequest`)
+
 Tracks player movement state between teams.
+
 - `id`: String (Primary Key)
 - `playerId`: String (Foreign Key -> PlayerProfile)
 - `fromTeamId`: String (Foreign Key -> Team)
@@ -131,7 +149,9 @@ Tracks player movement state between teams.
 - `requestedAt`: DateTime
 
 ### 10. TokenWallet & TokenTransaction (`TokenWallet`, `TokenTransaction`)
+
 Ledger for tracking participation token rewards.
+
 - `TokenWallet`:
   - `id`: String (Primary Key)
   - `playerId`: String (Unique, Foreign Key -> PlayerProfile)

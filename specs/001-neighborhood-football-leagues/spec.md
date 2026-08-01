@@ -5,7 +5,7 @@
 **Status**: Draft  
 **Input**: User description: "Build a SaaS platform for managing neighborhood football leagues where administrators can manage leagues, teams, players, referees, match schedules, results, standings, player transfers, and participation rewards through a token system."
 
-## User Scenarios & Testing *(mandatory)*
+## User Scenarios & Testing _(mandatory)_
 
 ### User Story 1 - League & Team Administration (Priority: P1)
 
@@ -77,7 +77,7 @@ As a Player or League Administrator, I want to earn and distribute tokens based 
 - **Match Forfeits**: How are forfeited or abandoned matches handled in scores and standings? (Default: Awarded as 3-0 victory to non-forfeiting team; forfeit team receives 0 points and 0 participation tokens).
 - **Mid-Season Transfers**: What happens to a player's previous statistics (goals, cards) when transferred? (Default: Historical stats remain tied to player profile and previous team match records; current team stats accumulate fresh).
 
-## Requirements *(mandatory)*
+## Requirements _(mandatory)_
 
 ### Functional Requirements
 
@@ -102,7 +102,7 @@ As a Player or League Administrator, I want to earn and distribute tokens based 
 - **Transfer Request**: Tracks player movement state (pending, approved, rejected, completed) between teams.
 - **Token Transaction**: Immutable ledger entry recording token minting, distribution, or redemption for a player.
 
-## Success Criteria *(mandatory)*
+## Success Criteria _(mandatory)_
 
 ### Measurable Outcomes
 
