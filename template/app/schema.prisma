@@ -14,106 +14,261 @@ enum Role {
   PLAYER
 }
 
+enum MatchStatus {
+  SCHEDULED
+  IN_PROGRESS
+  COMPLETED
+  POSTPONED
+  FORFEITED
+}
+
+enum TransferStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  CANCELLED
+}
+
+enum TokenType {
+  EARNED
+  SPENT
+  REWARD
+}
+
 model User {
-  id                        String          @id @default(uuid())
-  createdAt                 DateTime        @default(now())
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
 
-  email                     String?         @unique
-  username                  String?         @unique
-  isAdmin                   Boolean         @default(false)
-  role                      Role            @default(PLAYER)
+  email    String? @unique
+  username String? @unique
+  isAdmin  Boolean @default(false)
+  role     Role    @default(PLAYER)
 
-  paymentProcessorUserId    String?         @unique
-  lemonSqueezyCustomerPortalUrl String?     // You can delete this if you're not using Lemon Squeezy as your payments processor.
-  subscriptionStatus        String?         // 'active', 'cancel_at_period_end', 'past_due', 'deleted'
-  subscriptionPlan          String?         // 'hobby', 'pro'
-  datePaid                  DateTime?
-  credits                   Int             @default(3)
+  paymentProcessorUserId        String?   @unique
+  lemonSqueezyCustomerPortalUrl String? // You can delete this if you're not using Lemon Squeezy as your payments processor.
+  subscriptionStatus            String? // 'active', 'cancel_at_period_end', 'past_due', 'deleted'
+  subscriptionPlan              String? // 'hobby', 'pro'
+  datePaid                      DateTime?
+  credits                       Int       @default(3)
 
-  gptResponses              GptResponse[]
-  contactFormMessages       ContactFormMessage[]
-  tasks                     Task[]
-  files                     File[]
+  gptResponses        GptResponse[]
+  contactFormMessages ContactFormMessage[]
+  tasks               Task[]
+  files               File[]
+
+  playerProfile  PlayerProfile?
+  refereeProfile Referee?
+  managedTeams   Team[]         @relation("ManagedTeams")
 }
 
 model GptResponse {
-  id                        String          @id @default(uuid())
-  createdAt                 DateTime        @default(now())
-  updatedAt                 DateTime        @updatedAt
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-  user                      User            @relation(fields: [userId], references: [id])
-  userId                    String
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
 
-  content                   String
+  content String
 }
 
 model Task {
-  id                        String          @id @default(uuid())
-  createdAt                 DateTime        @default(now())
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
 
-  user                      User            @relation(fields: [userId], references: [id])
-  userId                    String
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
 
-  description               String
-  time                      String          @default("1")
-  isDone                    Boolean         @default(false)
+  description String
+  time        String  @default("1")
+  isDone      Boolean @default(false)
 }
 
 model File {
-  id                        String          @id @default(uuid())
-  createdAt                 DateTime        @default(now())
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
 
-  user                      User            @relation(fields: [userId], references: [id])
-  userId                    String
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
 
-  name                      String
-  type                      String
-  s3Key                     String
+  name  String
+  type  String
+  s3Key String
 }
 
 model DailyStats {
-  id                               Int             @id @default(autoincrement())
-  date                             DateTime        @default(now()) @unique
+  id   Int      @id @default(autoincrement())
+  date DateTime @unique @default(now())
 
-  totalViews                       Int             @default(0)
-  prevDayViewsChangePercent        String          @default("0")
-  userCount                        Int             @default(0)
-  paidUserCount                    Int             @default(0)
-  userDelta                        Int             @default(0)
-  paidUserDelta                    Int             @default(0)
-  totalRevenue                     Float           @default(0)
-  totalProfit                      Float           @default(0)
+  totalViews                Int    @default(0)
+  prevDayViewsChangePercent String @default("0")
+  userCount                 Int    @default(0)
+  paidUserCount             Int    @default(0)
+  userDelta                 Int    @default(0)
+  paidUserDelta             Int    @default(0)
+  totalRevenue              Float  @default(0)
+  totalProfit               Float  @default(0)
 
-  sources                          PageViewSource[]
+  sources PageViewSource[]
 }
 
 model PageViewSource {
+  name String
+  date DateTime @default(now())
+
+  dailyStats   DailyStats? @relation(fields: [dailyStatsId], references: [id])
+  dailyStatsId Int?
+
+  visitors Int
+
   @@id([date, name])
-  name                     String
-  date                     DateTime        @default(now())
-
-  dailyStats               DailyStats?     @relation(fields: [dailyStatsId], references: [id])
-  dailyStatsId             Int?
-
-  visitors                 Int
 }
 
 model Logs {
-  id                       Int             @id @default(autoincrement())
-  createdAt                DateTime        @default(now())
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
 
-  message                  String
-  level                    String
+  message String
+  level   String
 }
 
 model ContactFormMessage {
-  id                        String          @id @default(uuid())
-  createdAt                 DateTime        @default(now())
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
 
-  user                      User            @relation(fields: [userId], references: [id])
-  userId                    String
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
 
-  content                   String
-  isRead                    Boolean         @default(false)
-  repliedAt                 DateTime?
+  content   String
+  isRead    Boolean   @default(false)
+  repliedAt DateTime?
+}
+
+model League {
+  id                   String   @id @default(uuid())
+  name                 String
+  season               String
+  location             String
+  startDate            DateTime
+  endDate              DateTime
+  isTransferWindowOpen Boolean  @default(true)
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+
+  teams   Team[]
+  matches Match[]
+}
+
+model Team {
+  id        String   @id @default(uuid())
+  name      String
+  logo      String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  league   League @relation(fields: [leagueId], references: [id])
+  leagueId String
+
+  manager   User?   @relation("ManagedTeams", fields: [managerId], references: [id])
+  managerId String?
+
+  players PlayerProfile[]
+
+  homeMatches     Match[]           @relation("HomeMatches")
+  awayMatches     Match[]           @relation("AwayMatches")
+  StandingsRecord StandingsRecord[]
+}
+
+model PlayerProfile {
+  id     String @id @default(uuid())
+  user   User   @relation(fields: [userId], references: [id])
+  userId String @unique
+
+  team   Team?   @relation(fields: [teamId], references: [id])
+  teamId String?
+
+  position        String
+  number          Int?
+  TransferRequest TransferRequest[]
+  TokenWallet     TokenWallet?
+}
+
+model Referee {
+  id     String @id @default(uuid())
+  user   User   @relation(fields: [userId], references: [id])
+  userId String @unique
+
+  matches Match[]
+}
+
+model Match {
+  id     String      @id @default(uuid())
+  date   DateTime
+  status MatchStatus @default(SCHEDULED)
+
+  league   League @relation(fields: [leagueId], references: [id])
+  leagueId String
+
+  homeTeam   Team   @relation("HomeMatches", fields: [homeTeamId], references: [id])
+  homeTeamId String
+
+  awayTeam   Team   @relation("AwayMatches", fields: [awayTeamId], references: [id])
+  awayTeamId String
+
+  referee   Referee? @relation(fields: [refereeId], references: [id])
+  refereeId String?
+
+  events MatchEvent[]
+}
+
+model MatchEvent {
+  id     String @id @default(uuid())
+  minute Int
+  type   String
+
+  match   Match  @relation(fields: [matchId], references: [id])
+  matchId String
+}
+
+model StandingsRecord {
+  id           String @id @default(uuid())
+  points       Int    @default(0)
+  played       Int    @default(0)
+  wins         Int    @default(0)
+  draws        Int    @default(0)
+  losses       Int    @default(0)
+  goalsFor     Int    @default(0)
+  goalsAgainst Int    @default(0)
+
+  team   Team   @relation(fields: [teamId], references: [id])
+  teamId String
+}
+
+model TransferRequest {
+  id     String         @id @default(uuid())
+  status TransferStatus @default(PENDING)
+
+  player   PlayerProfile @relation(fields: [playerId], references: [id])
+  playerId String
+
+  fromTeamId String?
+  toTeamId   String?
+}
+
+model TokenWallet {
+  id      String @id @default(uuid())
+  balance Int    @default(0)
+
+  player           PlayerProfile      @relation(fields: [playerId], references: [id])
+  playerId         String             @unique
+  TokenTransaction TokenTransaction[]
+}
+
+model TokenTransaction {
+  id     String    @id @default(uuid())
+  amount Int
+  type   TokenType
+
+  wallet   TokenWallet @relation(fields: [walletId], references: [id])
+  walletId String
 }
