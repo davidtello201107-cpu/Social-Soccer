@@ -20,7 +20,7 @@
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
-- [ ] T003 Update Prisma schema with platform roles and user entity extensions in `template/app/schema.prisma`
+- [x] T003 Update Prisma schema with platform roles and user entity extensions in `template/app/schema.prisma`
 - [ ] T004 Add core football domain Prisma models (`League`, `Team`, `PlayerProfile`, `Referee`, `Match`, `MatchEvent`, `StandingsRecord`, `TransferRequest`, `TokenWallet`, `TokenTransaction`) in `template/app/schema.prisma`
 - [ ] T005 Run database migration to apply domain schema changes in `template/app/schema.prisma`
 - [ ] T006 [P] Declare global Wasp routes, auth, and role-based permissions in `template/app/main.wasp.ts`
