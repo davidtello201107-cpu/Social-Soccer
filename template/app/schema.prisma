@@ -30,6 +30,10 @@ enum TransferStatus {
 }
 
 enum TokenType {
+  PARTICIPATION
+  FAIR_PLAY
+  MATCH_MVP
+  BONUS
   EARNED
   SPENT
   REWARD
@@ -155,14 +159,16 @@ model League {
   createdAt            DateTime @default(now())
   updatedAt            DateTime @updatedAt
 
-  teams   Team[]
-  matches Match[]
+  teams     Team[]
+  matches   Match[]
+  standings StandingsRecord[]
 }
 
 model Team {
   id        String   @id @default(uuid())
   name      String
   logo      String?
+  logoUrl   String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -177,6 +183,8 @@ model Team {
   homeMatches     Match[]           @relation("HomeMatches")
   awayMatches     Match[]           @relation("AwayMatches")
   StandingsRecord StandingsRecord[]
+  fromTransfers   TransferRequest[] @relation("FromTeamTransfers")
+  toTransfers     TransferRequest[] @relation("ToTeamTransfers")
 }
 
 model PlayerProfile {
@@ -189,22 +197,29 @@ model PlayerProfile {
 
   position        String
   number          Int?
+  jerseyNumber    Int?
   TransferRequest TransferRequest[]
   TokenWallet     TokenWallet?
+  events          MatchEvent[]
 }
 
 model Referee {
-  id     String @id @default(uuid())
-  user   User   @relation(fields: [userId], references: [id])
-  userId String @unique
+  id            String  @id @default(uuid())
+  user          User    @relation(fields: [userId], references: [id])
+  userId        String  @unique
+  certification String?
 
   matches Match[]
 }
 
 model Match {
-  id     String      @id @default(uuid())
-  date   DateTime
-  status MatchStatus @default(SCHEDULED)
+  id          String      @id @default(uuid())
+  date        DateTime
+  scheduledAt DateTime?
+  venue       String?     @default("Main Pitch")
+  status      MatchStatus @default(SCHEDULED)
+  homeScore   Int         @default(0)
+  awayScore   Int         @default(0)
 
   league   League @relation(fields: [leagueId], references: [id])
   leagueId String
@@ -228,31 +243,45 @@ model MatchEvent {
 
   match   Match  @relation(fields: [matchId], references: [id])
   matchId String
+
+  player   PlayerProfile? @relation(fields: [playerId], references: [id])
+  playerId String?
 }
 
 model StandingsRecord {
-  id           String @id @default(uuid())
-  points       Int    @default(0)
-  played       Int    @default(0)
-  wins         Int    @default(0)
-  draws        Int    @default(0)
-  losses       Int    @default(0)
-  goalsFor     Int    @default(0)
-  goalsAgainst Int    @default(0)
+  id             String  @id @default(uuid())
+  points         Int     @default(0)
+  played         Int     @default(0)
+  wins           Int     @default(0)
+  won            Int     @default(0)
+  draws          Int     @default(0)
+  drawn          Int     @default(0)
+  losses         Int     @default(0)
+  lost           Int     @default(0)
+  goalsFor       Int     @default(0)
+  goalsAgainst   Int     @default(0)
+  goalDifference Int     @default(0)
+
+  league   League? @relation(fields: [leagueId], references: [id])
+  leagueId String?
 
   team   Team   @relation(fields: [teamId], references: [id])
   teamId String
 }
 
 model TransferRequest {
-  id     String         @id @default(uuid())
-  status TransferStatus @default(PENDING)
+  id          String         @id @default(uuid())
+  status      TransferStatus @default(PENDING)
+  requestedAt DateTime       @default(now())
 
   player   PlayerProfile @relation(fields: [playerId], references: [id])
   playerId String
 
+  fromTeam   Team?   @relation("FromTeamTransfers", fields: [fromTeamId], references: [id])
   fromTeamId String?
-  toTeamId   String?
+
+  toTeam   Team?   @relation("ToTeamTransfers", fields: [toTeamId], references: [id])
+  toTeamId String?
 }
 
 model TokenWallet {
@@ -265,9 +294,11 @@ model TokenWallet {
 }
 
 model TokenTransaction {
-  id     String    @id @default(uuid())
-  amount Int
-  type   TokenType
+  id          String    @id @default(uuid())
+  amount      Int
+  type        TokenType
+  description String?
+  createdAt   DateTime  @default(now())
 
   wallet   TokenWallet @relation(fields: [walletId], references: [id])
   walletId String
