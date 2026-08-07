@@ -68,7 +68,7 @@
 ### Implementation for User Story 2
 
 - [x] T018 [P] [US2] Declare Wasp actions and queries for matches and standings (`generateFixtures`, `getFixtures`, `submitMatchResult`, `getLeagueStandings`) in `template/app/main.wasp.ts`
-- [ ] T019 [US2] Implement round-robin fixture schedule generation algorithm in `template/app/src/match/scheduleGenerator.ts`
+- [x] T019 [US2] Implement round-robin fixture schedule generation algorithm in `template/app/src/match/scheduleGenerator.ts`
 - [x] T020 [US2] Implement `generateFixtures` action and `getFixtures` query in `template/app/src/match/operations.ts`
 - [ ] T021 [US2] Implement standings calculation engine (points, GD, GF, GA, tie-breaker rules) in `template/app/src/match/standingsEngine.ts`
 - [x] T022 [US2] Implement `submitMatchResult` action to record scores, goal events, cards, set status to COMPLETED, and update standings in `template/app/src/match/operations.ts`
