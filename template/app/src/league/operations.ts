@@ -191,5 +191,109 @@ export const addPlayerToTeam = async (args: any, context: any) => {
 };
 
 export const assignReferee = async (args: any, context: any) => {
-  throw new Error("Not implemented");
+  if (!context.user) {
+    throw new HttpError(401, "Only authenticated users can assign or register a referee");
+  }
+
+  let refereeId = args?.refereeId;
+  let userId = args?.userId;
+  const refereeName = args?.refereeName || args?.name;
+
+  let referee;
+
+  if (refereeId) {
+    referee = await context.entities.Referee.findUnique({
+      where: { id: refereeId },
+      include: { user: true, matches: true },
+    });
+    if (!referee) {
+      throw new HttpError(404, "Referee not found with provided refereeId");
+    }
+  } else if (userId) {
+    referee = await context.entities.Referee.findUnique({
+      where: { userId },
+      include: { user: true, matches: true },
+    });
+    if (!referee) {
+      await context.entities.User.update({
+        where: { id: userId },
+        data: { role: "REFEREE" },
+      });
+
+      referee = await context.entities.Referee.create({
+        data: {
+          user: { connect: { id: userId } },
+        },
+        include: { user: true, matches: true },
+      });
+    }
+  } else if (refereeName && typeof refereeName === "string" && refereeName.trim()) {
+    const sanitize = refereeName.trim().toLowerCase().replace(/[^a-z0-9]/g, "");
+    const randomSuffix = Math.floor(100000 + Math.random() * 900000);
+    const dummyEmail = `referee_${sanitize}_${randomSuffix}@example.com`;
+    const dummyUsername = refereeName.trim();
+
+    const newUser = await context.entities.User.create({
+      data: {
+        username: dummyUsername,
+        email: dummyEmail,
+        role: "REFEREE",
+      },
+    });
+
+    referee = await context.entities.Referee.create({
+      data: {
+        user: { connect: { id: newUser.id } },
+      },
+      include: { user: true, matches: true },
+    });
+  } else {
+    throw new HttpError(400, "Referee ID, User ID, or referee name is required");
+  }
+
+  if (args?.matchId) {
+    await context.entities.Match.update({
+      where: { id: args.matchId },
+      data: {
+        referee: { connect: { id: referee.id } },
+      },
+    });
+    referee = await context.entities.Referee.findUnique({
+      where: { id: referee.id },
+      include: { user: true, matches: true },
+    });
+  }
+
+  return {
+    ...referee,
+    name: referee?.user?.username || referee?.user?.email || "Referee",
+    assigned: true,
+  };
 };
+
+export const getReferees = async (args: any, context: any) => {
+  const referees = await context.entities.Referee.findMany({
+    include: {
+      user: true,
+      matches: {
+        include: {
+          league: true,
+          homeTeam: true,
+          awayTeam: true,
+        },
+      },
+    },
+    orderBy: {
+      id: "asc",
+    },
+  });
+
+  return referees.map((referee: any) => ({
+    ...referee,
+    name: referee.user?.username || referee.user?.email || "Referee",
+    email: referee.user?.email,
+    matchCount: referee.matches ? referee.matches.length : 0,
+    status: "Assigned",
+  }));
+};
+

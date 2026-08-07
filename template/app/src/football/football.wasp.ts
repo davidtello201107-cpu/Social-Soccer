@@ -10,6 +10,7 @@ import {
   createTeam,
   getLeagues,
   getLeagueTeams,
+  getReferees,
 } from "../league/operations" with { type: "ref" };
 import { FixtureSchedulePage } from "../match/pages/FixtureSchedulePage" with { type: "ref" };
 import { MatchResultPage } from "../match/pages/MatchResultPage" with { type: "ref" };
@@ -71,5 +72,6 @@ export const footballSpec: Spec = [
   action(createTeam, { entities: ["Team", "League", "User"] }),
   action(addPlayerToTeam, { entities: ["PlayerProfile", "Team", "User"] }),
   action(assignReferee, { entities: ["Referee", "User", "Match"] }),
+  query(getReferees, { entities: ["Referee", "User", "Match"] }),
 ];
 
