@@ -198,12 +198,12 @@ export function TeamRosterPage() {
               <span className="rounded-full bg-primary/10 p-2 text-primary">
                 <Shirt className="h-6 w-6" />
               </span>
-              <h1 className="text-3xl font-bold tracking-tight text-foreground">
+              <h1 className="text-3xl font-bold tracking-tight text-foreground" id="team-roster-heading">
                 Teams & Player Rosters
               </h1>
             </div>
             <p className="mt-1 text-sm text-muted-foreground">
-              Register neighborhood teams, manage player rosters, positions, and jersey numbers.
+              Register neighborhood teams, manage player rosters, assign field positions, and track jersey numbers.
             </p>
           </div>
 
