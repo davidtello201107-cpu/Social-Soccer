@@ -1,5 +1,6 @@
 import { HttpError } from "wasp/server";
 import { generateRoundRobinFixtures } from "./scheduleGenerator";
+import { calculateStandings } from "./standingsEngine";
 
 export const generateFixtures = async (args: any, context: any) => {
   if (!context.user) {
@@ -100,7 +101,118 @@ export const submitMatchResult = async (args: any, context: any) => {
   if (!context.user) {
     throw new HttpError(401, "Only authenticated users can submit match results");
   }
-  return { success: true };
+
+  if (!args?.matchId) {
+    throw new HttpError(400, "Match ID is required");
+  }
+
+  const match = await context.entities.Match.findUnique({
+    where: { id: args.matchId },
+    include: {
+      homeTeam: true,
+      awayTeam: true,
+      league: true,
+    },
+  });
+
+  if (!match) {
+    throw new HttpError(404, "Match not found");
+  }
+
+  const updatedMatch = await context.entities.Match.update({
+    where: { id: args.matchId },
+    data: {
+      status: "COMPLETED",
+    },
+  });
+
+  if (args.events && Array.isArray(args.events)) {
+    for (const event of args.events) {
+      await context.entities.MatchEvent.create({
+        data: {
+          minute: Number(event.minute) || 0,
+          type: String(event.type || "GOAL"),
+          match: { connect: { id: args.matchId } },
+        },
+      });
+    }
+  }
+
+  // Recalculate standings for the league
+  const teams = await context.entities.Team.findMany({
+    where: { leagueId: match.leagueId },
+  });
+
+  const leagueMatches = await context.entities.Match.findMany({
+    where: { leagueId: match.leagueId },
+    include: { events: true },
+  });
+
+  const matchInputs = leagueMatches.map((m: any) => {
+    if (m.id === args.matchId) {
+      return {
+        id: m.id,
+        homeTeamId: m.homeTeamId,
+        awayTeamId: m.awayTeamId,
+        homeScore: Number(args.homeScore ?? 0),
+        awayScore: Number(args.awayScore ?? 0),
+        status: "COMPLETED",
+        events: m.events,
+      };
+    }
+    return {
+      id: m.id,
+      homeTeamId: m.homeTeamId,
+      awayTeamId: m.awayTeamId,
+      homeScore: 0,
+      awayScore: 0,
+      status: m.status,
+      events: m.events,
+    };
+  });
+
+  const standingsList = calculateStandings(teams, matchInputs);
+
+  for (const item of standingsList) {
+    const existingRecord = await context.entities.StandingsRecord.findFirst({
+      where: { teamId: item.teamId },
+    });
+
+    if (existingRecord) {
+      await context.entities.StandingsRecord.update({
+        where: { id: existingRecord.id },
+        data: {
+          points: item.points,
+          played: item.played,
+          wins: item.won,
+          draws: item.drawn,
+          losses: item.lost,
+          goalsFor: item.goalsFor,
+          goalsAgainst: item.goalsAgainst,
+        },
+      });
+    } else {
+      await context.entities.StandingsRecord.create({
+        data: {
+          team: { connect: { id: item.teamId } },
+          points: item.points,
+          played: item.played,
+          wins: item.won,
+          draws: item.drawn,
+          losses: item.lost,
+          goalsFor: item.goalsFor,
+          goalsAgainst: item.goalsAgainst,
+        },
+      });
+    }
+  }
+
+  return {
+    success: true,
+    matchStatus: "COMPLETED",
+    tokensDistributed: 0,
+    match: updatedMatch,
+  };
 };
 
 export const getLeagueStandings = async (args: any, context: any) => {
