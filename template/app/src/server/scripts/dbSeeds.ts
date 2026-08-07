@@ -15,7 +15,7 @@ type MockUserData = Omit<User, "id">;
  */
 export async function seedMockUsers(prismaClient: PrismaClient) {
   await Promise.all(
-    generateMockUsersData(50).map((data) => prismaClient.user.create({ data })),
+    generateMockUsersData(50).map((data) => prismaClient.user.create({ data: data as any })),
   );
 }
 
@@ -43,6 +43,7 @@ function generateMockUserData(): MockUserData {
     username: faker.internet.userName({ firstName, lastName }),
     createdAt,
     isAdmin: false,
+    role: "user" as any,
     credits,
     subscriptionStatus,
     lemonSqueezyCustomerPortalUrl: null,
@@ -55,5 +56,5 @@ function generateMockUserData(): MockUserData {
     subscriptionPlan: subscriptionStatus
       ? faker.helpers.arrayElement(getSubscriptionPaymentPlanIds())
       : null,
-  };
+  } as MockUserData;
 }
