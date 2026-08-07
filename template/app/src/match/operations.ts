@@ -216,6 +216,32 @@ export const submitMatchResult = async (args: any, context: any) => {
 };
 
 export const getLeagueStandings = async (args: any, context: any) => {
-  return [];
+  let leagueId = args?.leagueId;
+
+  if (!leagueId) {
+    const activeLeague = await context.entities.League.findFirst({
+      orderBy: { createdAt: "desc" },
+    });
+    if (activeLeague) {
+      leagueId = activeLeague.id;
+    } else {
+      return [];
+    }
+  }
+
+  const teams = await context.entities.Team.findMany({
+    where: { leagueId },
+  });
+
+  if (!teams || teams.length === 0) {
+    return [];
+  }
+
+  const matches = await context.entities.Match.findMany({
+    where: { leagueId },
+    include: { events: true },
+  });
+
+  return calculateStandings(teams, matches);
 };
 
