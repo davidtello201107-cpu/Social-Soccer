@@ -38,7 +38,7 @@
 
 ### Tests for User Story 1
 
-- [ ] T008 [P] [US1] Write end-to-end integration test for League, Team, Player, and Referee setup flow in `template/app/e2e-tests/league-admin.spec.ts`
+- [x] T008 [P] [US1] Write end-to-end integration test for League, Team, Player, and Referee setup flow in `template/app/e2e-tests/league-admin.spec.ts`
 
 ### Implementation for User Story 1
 
