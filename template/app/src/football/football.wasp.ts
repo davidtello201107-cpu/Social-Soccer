@@ -18,6 +18,12 @@ import { StandingsPage } from "../match/pages/StandingsPage" with { type: "ref" 
 import { TransferDashboardPage } from "../transfer/pages/TransferDashboardPage" with { type: "ref" };
 import { PlayerWalletPage } from "../token/pages/PlayerWalletPage" with { type: "ref" };
 import { AdminTokenPage } from "../token/pages/AdminTokenPage" with { type: "ref" };
+import {
+  generateFixtures,
+  getFixtures,
+  getLeagueStandings,
+  submitMatchResult,
+} from "../match/operations" with { type: "ref" };
 
 export const footballSpec: Spec = [
   route(
@@ -73,5 +79,10 @@ export const footballSpec: Spec = [
   action(addPlayerToTeam, { entities: ["PlayerProfile", "Team", "User"] }),
   action(assignReferee, { entities: ["Referee", "User", "Match"] }),
   query(getReferees, { entities: ["Referee", "User", "Match"] }),
+
+  action(generateFixtures, { entities: ["Match", "League", "Team"] }),
+  query(getFixtures, { entities: ["Match", "League", "Team"] }),
+  action(submitMatchResult, { entities: ["Match", "MatchEvent", "StandingsRecord", "League", "Team", "User"] }),
+  query(getLeagueStandings, { entities: ["StandingsRecord", "League", "Team"] }),
 ];
 
