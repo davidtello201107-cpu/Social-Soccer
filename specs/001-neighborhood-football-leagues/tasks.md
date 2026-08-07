@@ -46,7 +46,7 @@
 - [x] T010 [US1] Implement `createLeague` action and `getLeagues` query operations in `template/app/src/league/operations.ts`
 - [x] T011 [US1] Implement `createTeam`, `getLeagueTeams`, and `addPlayerToTeam` operations in `template/app/src/league/operations.ts`
 - [x] T012 [US1] Implement `assignReferee` and `getReferees` operations in `template/app/src/league/operations.ts`
-- [ ] T013 [P] [US1] Build League Creation and Configuration page component in `template/app/src/league/pages/LeagueDashboardPage.tsx`
+- [x] T013 [P] [US1] Build League Creation and Configuration page component in `template/app/src/league/pages/LeagueDashboardPage.tsx`
 - [ ] T014 [P] [US1] Build Team Registration and Player Roster management UI in `template/app/src/league/pages/TeamRosterPage.tsx`
 - [ ] T015 [P] [US1] Build Referee Management and Pool Assignment UI in `template/app/src/league/pages/RefereePoolPage.tsx`
 - [ ] T016 [US1] Integrate League, Team, and Referee UI components with Wasp backend operations in `template/app/src/league/pages/LeagueDashboardPage.tsx`
