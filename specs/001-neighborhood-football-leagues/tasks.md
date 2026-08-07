@@ -43,7 +43,7 @@
 ### Implementation for User Story 1
 
 - [x] T009 [P] [US1] Declare Wasp actions and queries for League & Team administration (`createLeague`, `getLeagues`, `createTeam`, `getLeagueTeams`, `addPlayerToTeam`, `assignReferee`) in `template/app/main.wasp.ts`
-- [ ] T010 [US1] Implement `createLeague` action and `getLeagues` query operations in `template/app/src/league/operations.ts`
+- [x] T010 [US1] Implement `createLeague` action and `getLeagues` query operations in `template/app/src/league/operations.ts`
 - [ ] T011 [US1] Implement `createTeam`, `getLeagueTeams`, and `addPlayerToTeam` operations in `template/app/src/league/operations.ts`
 - [ ] T012 [US1] Implement `assignReferee` and `getReferees` operations in `template/app/src/league/operations.ts`
 - [ ] T013 [P] [US1] Build League Creation and Configuration page component in `template/app/src/league/pages/LeagueDashboardPage.tsx`
