@@ -1,11 +1,12 @@
 import { useEffect, useMemo } from "react";
 import { Outlet, useLocation } from "react-router";
+import { useAuth } from "wasp/client/auth";
 import { routes } from "wasp/client/router";
 import { Toaster } from "../client/components/ui/toaster";
 import "./Main.css";
 import { NavBar } from "./components/NavBar/NavBar";
 import {
-  demoNavigationitems,
+  getRoleNavigationItems,
   marketingNavigationItems,
 } from "./components/NavBar/constants";
 import { CookieConsentBanner } from "./components/cookie-consent/Banner";
@@ -15,6 +16,7 @@ import { CookieConsentBanner } from "./components/cookie-consent/Banner";
  * this is useful for templates, themes, and context
  */
 export function App() {
+  const { data: user } = useAuth();
   const location = useLocation();
   const isMarketingPage = useMemo(() => {
     return (
@@ -23,9 +25,12 @@ export function App() {
     );
   }, [location]);
 
-  const navigationItems = isMarketingPage
-    ? marketingNavigationItems
-    : demoNavigationitems;
+  const navigationItems = useMemo(() => {
+    if (isMarketingPage) {
+      return marketingNavigationItems;
+    }
+    return getRoleNavigationItems(user);
+  }, [isMarketingPage, user]);
 
   const shouldDisplayAppNavBar = useMemo(() => {
     return (

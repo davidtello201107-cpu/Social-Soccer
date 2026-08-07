@@ -87,7 +87,7 @@ export function NavBar({
                     },
                   )}
                 >
-                  Your SaaS
+                  Neighborhood Football
                 </span>
               </WaspRouterLink>
 
@@ -104,6 +104,30 @@ export function NavBar({
         </div>
       </header>
     </>
+  );
+}
+
+function RoleBadge({ user }: { user: any }) {
+  if (!user) return null;
+  const role = user.isAdmin ? "ADMIN" : user.role || "PLAYER";
+  const badgeColor =
+    role === "ADMIN"
+      ? "bg-red-500/10 text-red-500 border-red-500/20"
+      : role === "MANAGER"
+      ? "bg-blue-500/10 text-blue-500 border-blue-500/20"
+      : role === "REFEREE"
+      ? "bg-amber-500/10 text-amber-500 border-amber-500/20"
+      : "bg-emerald-500/10 text-emerald-500 border-emerald-500/20";
+
+  return (
+    <span
+      className={cn(
+        "rounded-full border px-2 py-0.5 text-xs font-semibold uppercase tracking-wider",
+        badgeColor
+      )}
+    >
+      {role}
+    </span>
   );
 }
 
@@ -138,7 +162,8 @@ function NavBarDesktopUserDropdown({ isScrolled }: { isScrolled: boolean }) {
           </div>
         </WaspRouterLink>
       ) : (
-        <div className="ml-3">
+        <div className="ml-3 flex items-center gap-2">
+          <RoleBadge user={user} />
           <UserDropdown user={user} />
         </div>
       )}
@@ -178,11 +203,12 @@ function NavBarMobileMenu({
         </SheetTrigger>
         <SheetContent side="right" className="w-[300px] sm:w-[400px]">
           <SheetHeader>
-            <SheetTitle className="flex items-center">
+            <SheetTitle className="flex items-center justify-between">
               <WaspRouterLink to={routes.LandingPageRoute.to}>
-                <span className="sr-only">Your SaaS</span>
+                <span className="sr-only">Neighborhood Football</span>
                 <NavLogo isScrolled={false} />
               </WaspRouterLink>
+              {user && <RoleBadge user={user} />}
             </SheetTitle>
           </SheetHeader>
           <div className="mt-6 flow-root">
@@ -252,7 +278,7 @@ function NavLogo({ isScrolled }: { isScrolled: boolean }) {
         "size-7": isScrolled,
       })}
       src={logo}
-      alt="Your SaaS App"
+      alt="Neighborhood Football Leagues"
     />
   );
 }
