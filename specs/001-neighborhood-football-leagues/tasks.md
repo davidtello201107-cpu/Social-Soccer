@@ -22,7 +22,7 @@
 
 - [x] T003 Update Prisma schema with platform roles and user entity extensions in `template/app/schema.prisma`
 - [ ] T004 Add core football domain Prisma models (`League`, `Team`, `PlayerProfile`, `Referee`, `Match`, `MatchEvent`, `StandingsRecord`, `TransferRequest`, `TokenWallet`, `TokenTransaction`) in `template/app/schema.prisma`
-- [ ] T005 Run database migration to apply domain schema changes in `template/app/schema.prisma`
+- [x] T005 Run database migration to apply domain schema changes in `template/app/schema.prisma`
 - [x] T006 [P] Declare global Wasp routes, auth, and role-based permissions in `template/app/main.wasp.ts`
 - [x] T007 [P] Create multi-role app layout and navigation bar in `template/app/src/client/components/NavBar.tsx` and `template/app/src/client/App.tsx`
 
@@ -49,7 +49,7 @@
 - [x] T013 [P] [US1] Build League Creation and Configuration page component in `template/app/src/league/pages/LeagueDashboardPage.tsx`
 - [x] T014 [P] [US1] Build Team Registration and Player Roster management UI in `template/app/src/league/pages/TeamRosterPage.tsx`
 - [ ] T015 [P] [US1] Build Referee Management and Pool Assignment UI in `template/app/src/league/pages/RefereePoolPage.tsx`
-- [ ] T016 [US1] Integrate League, Team, and Referee UI components with Wasp backend operations in `template/app/src/league/pages/LeagueDashboardPage.tsx`
+- [x] T016 [US1] Integrate League, Team, and Referee UI components with Wasp backend operations in `template/app/src/league/pages/LeagueDashboardPage.tsx`
 
 **Checkpoint**: User Story 1 is fully functional as an independent MVP.
 
@@ -67,13 +67,13 @@
 
 ### Implementation for User Story 2
 
-- [ ] T018 [P] [US2] Declare Wasp actions and queries for matches and standings (`generateFixtures`, `getFixtures`, `submitMatchResult`, `getLeagueStandings`) in `template/app/main.wasp.ts`
+- [x] T018 [P] [US2] Declare Wasp actions and queries for matches and standings (`generateFixtures`, `getFixtures`, `submitMatchResult`, `getLeagueStandings`) in `template/app/main.wasp.ts`
 - [ ] T019 [US2] Implement round-robin fixture schedule generation algorithm in `template/app/src/match/scheduleGenerator.ts`
-- [ ] T020 [US2] Implement `generateFixtures` action and `getFixtures` query in `template/app/src/match/operations.ts`
+- [x] T020 [US2] Implement `generateFixtures` action and `getFixtures` query in `template/app/src/match/operations.ts`
 - [ ] T021 [US2] Implement standings calculation engine (points, GD, GF, GA, tie-breaker rules) in `template/app/src/match/standingsEngine.ts`
-- [ ] T022 [US2] Implement `submitMatchResult` action to record scores, goal events, cards, set status to COMPLETED, and update standings in `template/app/src/match/operations.ts`
+- [x] T022 [US2] Implement `submitMatchResult` action to record scores, goal events, cards, set status to COMPLETED, and update standings in `template/app/src/match/operations.ts`
 - [ ] T023 [US2] Implement `getLeagueStandings` query operation in `template/app/src/match/operations.ts`
-- [ ] T024 [P] [US2] Build Fixture Schedule list and fixture assignment page component in `template/app/src/match/pages/FixtureSchedulePage.tsx`
+- [x] T024 [P] [US2] Build Fixture Schedule list and fixture assignment page component in `template/app/src/match/pages/FixtureSchedulePage.tsx`
 - [ ] T025 [P] [US2] Build Referee Match Result Submission form UI component in `template/app/src/match/pages/MatchResultPage.tsx`
 - [ ] T026 [P] [US2] Build Real-time League Standings Table UI component in `template/app/src/match/pages/StandingsPage.tsx`
 - [ ] T027 [US2] Connect Fixture, Result Entry, and Standings UI to backend Wasp operations in `template/app/src/match/pages/StandingsPage.tsx`
