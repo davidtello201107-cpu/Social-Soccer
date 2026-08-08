@@ -10,6 +10,7 @@ import { Link } from "wasp/client/router";
 import {
   UserCheck,
   UserPlus,
+  Users,
   Plus,
   Loader2,
   Filter,

@@ -23,6 +23,7 @@ export interface MatchInput {
 }
 
 export interface TeamStandings {
+  [key: string]: any;
   rank: number;
   teamId: string;
   teamName: string;

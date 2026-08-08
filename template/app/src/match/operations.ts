@@ -48,7 +48,7 @@ export const generateFixtures = async (args: any, context: any) => {
     },
   });
 
-  const createdMatches = [];
+  const createdMatches: any[] = [];
   for (const fixture of generatedFixtures) {
     const match = await context.entities.Match.create({
       data: {
