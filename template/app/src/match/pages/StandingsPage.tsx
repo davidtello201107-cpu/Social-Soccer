@@ -29,6 +29,7 @@ import {
 import { Label } from "../../client/components/ui/label";
 
 export function StandingsPage() {
+  // Query active leagues list from backend Wasp operation
   const { data: leagues, isLoading: isLoadingLeagues } = useQuery(getLeagues);
   const [selectedLeagueId, setSelectedLeagueId] = useState<string>("");
 
@@ -39,6 +40,7 @@ export function StandingsPage() {
     }
   }, [leagues, selectedLeagueId]);
 
+  // Query real-time standings records for the selected league
   const {
     data: standings,
     isLoading: isLoadingStandings,

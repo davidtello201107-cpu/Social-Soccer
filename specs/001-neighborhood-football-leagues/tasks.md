@@ -76,7 +76,7 @@
 - [x] T024 [P] [US2] Build Fixture Schedule list and fixture assignment page component in `template/app/src/match/pages/FixtureSchedulePage.tsx`
 - [ ] T025 [P] [US2] Build Referee Match Result Submission form UI component in `template/app/src/match/pages/MatchResultPage.tsx`
 - [ ] T026 [P] [US2] Build Real-time League Standings Table UI component in `template/app/src/match/pages/StandingsPage.tsx`
-- [ ] T027 [US2] Connect Fixture, Result Entry, and Standings UI to backend Wasp operations in `template/app/src/match/pages/StandingsPage.tsx`
+- [x] T027 [US2] Connect Fixture, Result Entry, and Standings UI to backend Wasp operations in `template/app/src/match/pages/StandingsPage.tsx`
 
 **Checkpoint**: User Stories 1 and 2 deliver complete competitive league management functionality.
 
